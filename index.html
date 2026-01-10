@@ -343,9 +343,7 @@
         </div>
     </div>
 
-    <script type="module">
-import { ESPLoader, SerialTransport } from "https://unpkg.com/esptool-js@0.5.6/dist/web/index.js";
-
+    <script>
 let transport, esploader;
 
 const logEl = document.getElementById("log");
@@ -370,11 +368,11 @@ btnConnect.onclick = async () => {
     setStatus("Giữ nút BOOT rồi bấm Kết nối...", true);
 
     const port = await navigator.serial.requestPort();
-    transport = new SerialTransport(port);
+    transport = new window.SerialTransport(port);
 
-    esploader = new ESPLoader({
+    esploader = new window.ESPLoader({
       transport,
-      baudrate: 115200, // giống web Espressif
+      baudrate: 115200,
       terminal: {
         writeLine: t => setStatus(t)
       }
@@ -386,6 +384,7 @@ btnConnect.onclick = async () => {
     btnFlash.disabled = false;
     btnConnect.textContent = "✓ Đã kết nối ESP32";
     btnConnect.style.background = "#27ae60";
+
   } catch (e) {
     console.error(e);
     setStatus("Không thể kết nối – hãy giữ BOOT khi bấm Kết nối");
@@ -416,6 +415,7 @@ btnFlash.onclick = async () => {
     bar.style.width = "100%";
     percentEl.textContent = "100%";
     setStatus("Hoàn tất! ESP32 đang khởi động lại.");
+
   } catch (e) {
     console.error(e);
     setStatus("Lỗi khi nạp firmware");
@@ -425,11 +425,11 @@ btnFlash.onclick = async () => {
 </script>
 
 
-
 </body>
 
 
 </html>
+
 
 
 
