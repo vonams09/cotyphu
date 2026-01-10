@@ -344,7 +344,9 @@
     </div>
 
     <script type="module">
-let port, esploader;
+import { ESPLoader, SerialTransport } from "https://unpkg.com/esptool-js@0.5.6/dist/web/index.js";
+
+let transport, esploader;
 
 const logEl = document.getElementById("log");
 const bar = document.getElementById("bar");
@@ -358,20 +360,21 @@ function setStatus(text, loading = false) {
 }
 
 if (!("serial" in navigator)) {
-  setStatus("Trình duyệt không hỗ trợ Web Serial (hãy dùng Chrome)");
+  setStatus("Trình duyệt không hỗ trợ Web Serial (Chrome / Edge)");
   btnConnect.disabled = true;
 }
 
 /* ===== CONNECT ===== */
 btnConnect.onclick = async () => {
   try {
-    setStatus("Giữ nút BOOT trên ESP32 rồi bấm Kết nối...", true);
+    setStatus("Giữ nút BOOT rồi bấm Kết nối...", true);
 
-    port = await navigator.serial.requestPort();
+    const port = await navigator.serial.requestPort();
+    transport = new SerialTransport(port);
 
-    esploader = new window.ESPLoader({
-      port,
-      baudrate: 115200,   // ⚠️ BAUD THẤP – ỔN ĐỊNH
+    esploader = new ESPLoader({
+      transport,
+      baudrate: 115200, // giống web Espressif
       terminal: {
         writeLine: t => setStatus(t)
       }
@@ -383,8 +386,8 @@ btnConnect.onclick = async () => {
     btnFlash.disabled = false;
     btnConnect.textContent = "✓ Đã kết nối ESP32";
     btnConnect.style.background = "#27ae60";
-
   } catch (e) {
+    console.error(e);
     setStatus("Không thể kết nối – hãy giữ BOOT khi bấm Kết nối");
   }
 };
@@ -401,7 +404,7 @@ btnFlash.onclick = async () => {
     await esploader.writeFlash({
       flashSize: "keep",
       data: [
-        { address: 0x0, data: bin } // ⚠️ MERGED.BIN → 0x0
+        { address: 0x0, data: bin } // merged.bin
       ],
       progress: p => {
         const percent = Math.floor(p * 100);
@@ -413,8 +416,8 @@ btnFlash.onclick = async () => {
     bar.style.width = "100%";
     percentEl.textContent = "100%";
     setStatus("Hoàn tất! ESP32 đang khởi động lại.");
-
   } catch (e) {
+    console.error(e);
     setStatus("Lỗi khi nạp firmware");
     btnFlash.disabled = false;
   }
@@ -422,9 +425,11 @@ btnFlash.onclick = async () => {
 </script>
 
 
+
 </body>
 
 
 </html>
+
 
 
