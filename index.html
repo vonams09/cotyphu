@@ -392,7 +392,7 @@
                 btnFlash.disabled = true;
                 setStatus("Đang nạp firmware...", true);
 
-                const res = await fetch("cotyphu.bin");
+                const res = await fetch("firmware/cotyphu.bin");
                 const bin = await res.arrayBuffer();
 
                 await esptool.writeFlash({
@@ -419,3 +419,4 @@
 
 
 </html>
+
