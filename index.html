@@ -344,79 +344,87 @@
     </div>
 
     <script type="module">
-        let transport, esptool;
+let port, esploader;
 
-        const logEl = document.getElementById("log");
-        const bar = document.getElementById("bar");
-        const percentEl = document.getElementById("percent");
-        const btnConnect = document.getElementById("connect");
-        const btnFlash = document.getElementById("flash");
+const logEl = document.getElementById("log");
+const bar = document.getElementById("bar");
+const percentEl = document.getElementById("percent");
+const btnConnect = document.getElementById("connect");
+const btnFlash = document.getElementById("flash");
 
-        function setStatus(text, loading = false) {
-            logEl.textContent = "> " + text;
-            logEl.classList.toggle("loading", loading);
-        }
+function setStatus(text, loading = false) {
+  logEl.textContent = "> " + text;
+  logEl.classList.toggle("loading", loading);
+}
 
-        if (!("serial" in navigator)) {
-            setStatus("Trình duyệt không hỗ trợ Web Serial (dùng Chrome / Edge)");
-            btnConnect.disabled = true;
-        }
+if (!("serial" in navigator)) {
+  setStatus("Trình duyệt không hỗ trợ Web Serial (hãy dùng Chrome)");
+  btnConnect.disabled = true;
+}
 
-        btnConnect.onclick = async () => {
-            try {
-                setStatus("Đang yêu cầu kết nối...", true);
+/* ===== CONNECT ===== */
+btnConnect.onclick = async () => {
+  try {
+    setStatus("Giữ nút BOOT trên ESP32 rồi bấm Kết nối...", true);
 
-                const port = await navigator.serial.requestPort();
-                transport = new window.SerialTransport(port);
-                await transport.connect(921600);
+    port = await navigator.serial.requestPort();
 
-                esptool = new window.ESPLoader({
-                    transport,
-                    baudrate: 921600,
-                    terminal: { writeLine: t => setStatus(t) }
-                });
+    esploader = new window.ESPLoader({
+      port,
+      baudrate: 115200,   // ⚠️ BAUD THẤP – ỔN ĐỊNH
+      terminal: {
+        writeLine: t => setStatus(t)
+      }
+    });
 
-                await esptool.main();
+    await esploader.main();
 
-                setStatus("Thiết bị đã sẵn sàng");
-                btnFlash.disabled = false;
-                btnConnect.textContent = "✓ Đã kết nối ESP32";
-                btnConnect.style.background = "#27ae60";
-            } catch {
-                setStatus("Không thể kết nối thiết bị");
-            }
-        };
+    setStatus("ESP32 đã sẵn sàng");
+    btnFlash.disabled = false;
+    btnConnect.textContent = "✓ Đã kết nối ESP32";
+    btnConnect.style.background = "#27ae60";
 
-        btnFlash.onclick = async () => {
-            try {
-                btnFlash.disabled = true;
-                setStatus("Đang nạp firmware...", true);
+  } catch (e) {
+    setStatus("Không thể kết nối – hãy giữ BOOT khi bấm Kết nối");
+  }
+};
 
-                const res = await fetch("firmware/cotyphu.bin");
-                const bin = await res.arrayBuffer();
+/* ===== FLASH ===== */
+btnFlash.onclick = async () => {
+  try {
+    btnFlash.disabled = true;
+    setStatus("Đang nạp firmware...", true);
 
-                await esptool.writeFlash({
-                    flashSize: "keep",
-                    data: [{ address: 0x10000, data: bin }],
-                    progress: p => {
-                        const percent = Math.floor(p * 100);
-                        bar.style.width = percent + "%";
-                        percentEl.textContent = percent + "%";
-                    }
-                });
+    const res = await fetch("firmware/cotyphu.bin");
+    const bin = await res.arrayBuffer();
 
-                bar.style.width = "100%";
-                percentEl.textContent = "100%";
-                setStatus("Hoàn tất! Thiết bị đang khởi động lại.");
-            } catch {
-                setStatus("Lỗi khi nạp firmware");
-                btnFlash.disabled = false;
-            }
-        };
-    </script>
+    await esploader.writeFlash({
+      flashSize: "keep",
+      data: [
+        { address: 0x0, data: bin } // ⚠️ MERGED.BIN → 0x0
+      ],
+      progress: p => {
+        const percent = Math.floor(p * 100);
+        bar.style.width = percent + "%";
+        percentEl.textContent = percent + "%";
+      }
+    });
+
+    bar.style.width = "100%";
+    percentEl.textContent = "100%";
+    setStatus("Hoàn tất! ESP32 đang khởi động lại.");
+
+  } catch (e) {
+    setStatus("Lỗi khi nạp firmware");
+    btnFlash.disabled = false;
+  }
+};
+</script>
+
 
 </body>
 
 
 </html>
+
 
