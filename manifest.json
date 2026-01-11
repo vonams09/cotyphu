@@ -1,5 +1,5 @@
 {
-  "name": "Monopoly Bank ESP32-S3",
+  "name": "Co ty phu ESP32-S3 N16R8",
   "version": "1.0.2",
   "builds": [
     {
@@ -13,3 +13,4 @@
     }
   ]
 }
+
