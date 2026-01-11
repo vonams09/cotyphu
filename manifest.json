@@ -1,12 +1,12 @@
 {
-  "name": "Monopoly Bank ESP32",
+  "name": "Monopoly Bank ESP32-S3",
   "version": "1.0.2",
   "builds": [
     {
-      "chipFamily": "ESP32",
+      "chipFamily": "ESP32-S3",
       "parts": [
         {
-          "path": "cotyphu.bin",
+          "path": "firmware.bin",
           "offset": 0
         }
       ]
