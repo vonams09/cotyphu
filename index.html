@@ -1,435 +1,185 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monopoly Bank – Game Loader</title>
+  <meta charset="UTF-8">
+  <title>CỜ TỶ PHÚ – Game Loader</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- ===== FONTS ===== -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
-        rel="stylesheet">
+  <!-- ESP WEB TOOLS -->
+  <script type="module"
+    src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js">
+  </script>
 
-    <!-- ===== ESPTOOL ===== -->
-    <script src="https://unpkg.com/esptool-js@0.5.6/dist/web/index.js"></script>
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --primary: #0081c2;
-            --secondary: #e74c3c;
-            --accent: #f1c40f;
-            --bg: #eef1f5;
-            --card-bg: #ffffff;
-            --text-main: #1a1a1a;
-            --text-muted: #6b7280;
-            --success: #27ae60;
+  <style>
+    :root {
+      --primary:#0081c2;
+      --accent:#f1c40f;
+      --danger:#e74c3c;
+      --bg:#eef1f5;
+      --card:#ffffff;
+      --text:#1a1a1a;
+      --muted:#6b7280;
+      --success:#27ae60;
+    }
 
-            --font-main: 'Inter', system-ui, sans-serif;
-            --font-title: 'Be Vietnam Pro', sans-serif;
-        }
+    * { box-sizing:border-box; }
 
-        * {
-            box-sizing: border-box;
-        }
+    body {
+      margin:0;
+      padding:40px 20px;
+      background:linear-gradient(180deg,#e5e7eb,#d6dbe1);
+      font-family:'Inter',system-ui,sans-serif;
+      color:var(--text);
+    }
 
-        body {
-            margin: 0;
-            padding: 40px 20px;
-            font-family: var(--font-main);
-            background: linear-gradient(180deg,
-                    #e5e7eb 0%,
-                    #dfe3e8 50%,
-                    #d6dbe1 100%);
-            color: var(--text-main);
-        }
+    .container {
+      max-width:560px;
+      margin:auto;
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+    }
 
+    .card {
+      background:var(--card);
+      border-radius:20px;
+      padding:34px;
+      box-shadow:0 12px 30px rgba(0,0,0,.08);
+      border:1px solid rgba(0,0,0,.04);
+    }
 
-        .container {
-            max-width: 560px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-        }
+    .title {
+      font-family:'Be Vietnam Pro',sans-serif;
+      font-size:1.9rem;
+      font-weight:800;
+      text-align:center;
+      color:var(--primary);
+      margin-bottom:6px;
+    }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 34px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
-            border: 1px solid rgba(0, 0, 0, .04);
-        }
+    .subtitle {
+      text-align:center;
+      font-size:.9rem;
+      color:var(--muted);
+      margin-bottom:28px;
+    }
 
-        /* HEADER */
-        .title {
-            font-family: var(--font-title);
-            font-size: 1.75rem;
-            font-weight: 800;
-            text-align: center;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
+    .install-box {
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      align-items:center;
+    }
 
-        .subtitle {
-            text-align: center;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 28px;
-        }
+    .install-btn {
+      padding:16px 26px;
+      border-radius:16px;
+      border:none;
+      font-size:1rem;
+      font-weight:700;
+      cursor:pointer;
+      background:linear-gradient(135deg,var(--danger),#d63031);
+      color:#fff;
+      box-shadow:0 10px 20px rgba(231,76,60,.35);
+      transition:.25s;
+    }
 
-        /* STATUS */
-        .status-box {
-            background: #1e272e;
-            color: #7efaff;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid #000;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, .3);
-            margin-bottom: 22px;
-            min-height: 24px;
-        }
+    .install-btn:hover {
+      transform:translateY(-2px);
+    }
 
-        .loading {
-            animation: pulse 1.5s infinite;
-        }
+    .note {
+      background:#fffbe6;
+      border:1px solid #ffe58f;
+      border-radius:12px;
+      padding:16px;
+      font-size:.85rem;
+      color:#7c2d12;
+      margin-top:20px;
+    }
 
-        @keyframes pulse {
-            0% {
-                opacity: 1
-            }
+    .guide h3 {
+      font-family:'Be Vietnam Pro',sans-serif;
+      color:var(--primary);
+      margin-top:0;
+    }
 
-            50% {
-                opacity: .6
-            }
+    .guide ul {
+      list-style:none;
+      padding:0;
+    }
 
-            100% {
-                opacity: 1
-            }
-        }
+    .guide li {
+      padding-left:28px;
+      position:relative;
+      margin-bottom:14px;
+      font-size:.9rem;
+    }
 
-        /* BUTTONS */
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
+    .guide li::before {
+      content:"✓";
+      position:absolute;
+      left:0;
+      top:0;
+      font-weight:800;
+      color:var(--danger);
+    }
 
-        .btn {
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all .25s ease;
-        }
-
-        .btn-connect {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .btn-connect:hover {
-            transform: translateY(-2px);
-        }
-
-        .btn-flash {
-            background: var(--secondary);
-            color: #fff;
-        }
-
-        .btn-flash:hover:not(:disabled) {
-            background: #d63031;
-            transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            background: #e5e7eb;
-            color: #9ca3af;
-            cursor: not-allowed;
-        }
-
-        /* PROGRESS */
-        .progress-wrapper {
-            margin-top: 28px;
-        }
-
-        .progress-text {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .progress-container {
-            height: 10px;
-            background: #e5e7eb;
-            border-radius: 999px;
-            overflow: hidden;
-        }
-
-        #bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #27ae60, #2ecc71);
-            transition: width .3s ease;
-        }
-
-        /* GUIDE */
-        .guide h3 {
-            font-family: var(--font-title);
-            color: var(--primary);
-            font-size: 1.25rem;
-            margin-top: 0;
-        }
-
-        .guide p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        .guide ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .guide li {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 16px;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .guide li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--secondary);
-            font-weight: 800;
-        }
-
-        .note {
-            background: #fffbe6;
-            border: 1px solid #ffe58f;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 0.85rem;
-            color: #7c2d12;
-            margin-top: 20px;
-        }
-
-        .footer {
-            text-align: center;
-            font-size: 12px;
-            color: #9ca3af;
-            margin-bottom: 10px;
-        }
-    </style>
+    .footer {
+      text-align:center;
+      font-size:12px;
+      color:#9ca3af;
+    }
+  </style>
 </head>
 
 <body>
+<div class="container">
 
-    <div class="container">
+  <!-- INSTALL -->
+  <div class="card">
+    <div class="title">🎲 CỜ TỶ PHÚ</div>
+    <div class="subtitle">Trình cài đặt Firmware • ESP32</div>
 
-        <!-- ===== FLASHER ===== -->
-        <div class="card">
-            <div class="title">🎲 CỜ TỶ PHÚ</div>
-            <div class="subtitle">Trình cập nhật Firmware • v1.0.2</div>
+    <div class="install-box">
+      <p>Kết nối ESP32 bằng cáp USB và bấm cài đặt.</p>
 
-            <div id="log" class="status-box">&gt; Đang chờ thiết bị...</div>
+      <esp-web-install-button manifest="manifest.json">
+        <button class="install-btn">
+          🚀 CÀI ĐẶT GAME
+        </button>
+      </esp-web-install-button>
 
-            <div class="btn-group">
-                <button id="connect" class="btn btn-connect">🔌 Kết nối ESP32</button>
-                <button id="flash" class="btn btn-flash" disabled>🚀 Bắt đầu nạp Game</button>
-            </div>
-
-            <div class="progress-wrapper">
-                <div class="progress-text">
-                    <span>Tiến trình</span>
-                    <span id="percent">0%</span>
-                </div>
-                <div class="progress-container">
-                    <div id="bar"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== GUIDE ===== -->
-        <div class="card guide">
-            <h3>📘 Hướng dẫn cập nhật</h3>
-            <p>Vui lòng làm theo các bước dưới đây để cập nhật game an toàn.</p>
-
-            <ul>
-                <li>Sử dụng cáp USB có hỗ trợ truyền dữ liệu.</li>
-                <li>Nhấn “Kết nối ESP32” và chọn đúng cổng thiết bị.</li>
-                <li>Nhấn “Bắt đầu nạp Game” và chờ đến khi hoàn tất.</li>
-                <li>Thiết bị sẽ tự khởi động vào game sau khi nạp xong.</li>
-            </ul>
-
-            <div class="note">
-                💡 Nếu không thấy thiết bị, hãy thử đổi cổng USB hoặc cáp khác.
-            </div>
-        </div>
-
-        <div class="card guide">
-            <h3>📘 Hướng dẫn sử dụng & đấu nối</h3>
-
-            <p>
-                Trang web này dùng để nạp game <b>Cờ Tỷ Phú – Monopoly Bank</b>
-                vào thiết bị thông qua cáp USB. Người dùng không cần cài Arduino hay phần mềm kỹ thuật.
-            </p>
-
-            <h4>🔧 1. Đấu nối phần cứng</h4>
-            <ul>
-                <li>Sử dụng bo mạch <b>ESP32</b> đã được lắp sẵn vào thiết bị ngân hàng.</li>
-                <li>Cắm cáp <b>USB (USB-C hoặc Micro-USB)</b> từ ESP32 vào máy tính.</li>
-                <li>Cáp phải hỗ trợ <b>truyền dữ liệu</b> (không dùng cáp chỉ sạc).</li>
-                <li>Thiết bị sẽ được cấp nguồn trực tiếp qua cổng USB.</li>
-            </ul>
-
-            <h4>🌐 2. Yêu cầu trình duyệt</h4>
-            <ul>
-                <li>Sử dụng <b>Google Chrome</b> hoặc <b>Microsoft Edge</b>.</li>
-                <li>Không hỗ trợ Safari hoặc Firefox.</li>
-                <li>Máy tính Windows hoặc macOS đều sử dụng được.</li>
-            </ul>
-
-            <h4>🔌 3. Kết nối thiết bị</h4>
-            <ul>
-                <li>Nhấn nút <b>“Kết nối ESP32”</b> trên giao diện.</li>
-                <li>Trình duyệt sẽ hiện danh sách cổng kết nối.</li>
-                <li>Chọn thiết bị có tên <b>CP210x</b>, <b>CH340</b> hoặc <b>USB Serial</b>.</li>
-                <li>Sau khi kết nối thành công, nút <b>“Bắt đầu nạp Game”</b> sẽ được mở.</li>
-            </ul>
-
-            <h4>🚀 4. Nạp game</h4>
-            <ul>
-                <li>Nhấn <b>“Bắt đầu nạp Game”</b>.</li>
-                <li>Không rút cáp USB và không đóng trình duyệt trong quá trình nạp.</li>
-                <li>Thanh tiến trình sẽ hiển thị % nạp.</li>
-                <li>Khi hoàn tất, thiết bị sẽ tự khởi động lại.</li>
-            </ul>
-
-            <h4>🎮 5. Sử dụng giao diện game</h4>
-            <ul>
-                <li>Truy cập địa chỉ hiển thị trên màn hình thiết bị hoặc mDNS (nếu có).</li>
-                <li>Mỗi người chơi chọn <b>nhân vật</b> trên màn hình.</li>
-                <li>Ngân hàng dùng để <b>chuyển tiền</b>, <b>thu phí</b> và <b>phát thưởng</b>.</li>
-                <li>Mọi giao dịch đều hiển thị trong <b>nhật ký giao dịch</b>.</li>
-            </ul>
-
-            <div class="note">
-                ⚠️ Lưu ý: Không rút cáp USB khi đang nạp game.
-                Nếu gặp lỗi kết nối, hãy thử đổi cổng USB hoặc cáp khác.
-            </div>
-        </div>
-
-
-        <div class="footer">
-            © 2024 Monopoly Bank Project • Boardgame Community
-        </div>
+      <p style="font-size:12px;color:var(--muted)">
+        Hỗ trợ Chrome / Edge • Không cần Arduino
+      </p>
     </div>
+  </div>
 
-    <script>
-let transport, esploader;
+  <!-- GUIDE -->
+  <div class="card guide">
+    <h3>📘 Hướng dẫn nhanh</h3>
+    <ul>
+      <li>Sử dụng cáp USB có truyền dữ liệu.</li>
+      <li>Bấm “CÀI ĐẶT GAME”.</li>
+      <li>Chọn đúng cổng ESP32.</li>
+      <li>Chờ đến khi hoàn tất và thiết bị tự khởi động.</li>
+    </ul>
 
-const logEl = document.getElementById("log");
-const bar = document.getElementById("bar");
-const percentEl = document.getElementById("percent");
-const btnConnect = document.getElementById("connect");
-const btnFlash = document.getElementById("flash");
+    <div class="note">
+      ⚠️ Không rút cáp USB khi đang cài đặt firmware.
+    </div>
+  </div>
 
-function setStatus(text, loading = false) {
-  logEl.textContent = "> " + text;
-  logEl.classList.toggle("loading", loading);
-}
+  <div class="footer">
+    © 2024 Monopoly Bank • ESP32 Boardgame Project
+  </div>
 
-if (!("serial" in navigator)) {
-  setStatus("Trình duyệt không hỗ trợ Web Serial (Chrome / Edge)");
-  btnConnect.disabled = true;
-}
-
-/* ===== CONNECT ===== */
-btnConnect.onclick = async () => {
-  try {
-    setStatus("Giữ nút BOOT rồi bấm Kết nối...", true);
-
-    const port = await navigator.serial.requestPort();
-    transport = new window.SerialTransport(port);
-
-    esploader = new window.ESPLoader({
-      transport,
-      baudrate: 115200,
-      terminal: {
-        writeLine: t => setStatus(t)
-      }
-    });
-
-    await esploader.main();
-
-    setStatus("ESP32 đã sẵn sàng");
-    btnFlash.disabled = false;
-    btnConnect.textContent = "✓ Đã kết nối ESP32";
-    btnConnect.style.background = "#27ae60";
-
-  } catch (e) {
-    console.error(e);
-    setStatus("Không thể kết nối – hãy giữ BOOT khi bấm Kết nối");
-  }
-};
-
-/* ===== FLASH ===== */
-btnFlash.onclick = async () => {
-  try {
-    btnFlash.disabled = true;
-    setStatus("Đang nạp firmware...", true);
-
-    const res = await fetch("firmware/cotyphu.bin");
-    const bin = await res.arrayBuffer();
-
-    await esploader.writeFlash({
-      flashSize: "keep",
-      data: [
-        { address: 0x0, data: bin } // merged.bin
-      ],
-      progress: p => {
-        const percent = Math.floor(p * 100);
-        bar.style.width = percent + "%";
-        percentEl.textContent = percent + "%";
-      }
-    });
-
-    bar.style.width = "100%";
-    percentEl.textContent = "100%";
-    setStatus("Hoàn tất! ESP32 đang khởi động lại.");
-
-  } catch (e) {
-    console.error(e);
-    setStatus("Lỗi khi nạp firmware");
-    btnFlash.disabled = false;
-  }
-};
-</script>
-
-
+</div>
 </body>
-
-
 </html>
-
-
-
-
