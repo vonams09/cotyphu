@@ -6,11 +6,12 @@
       "chipFamily": "ESP32-S3",
       "parts": [
         {
-          "path": "firmware.bin",
+          "path": "cotyphu.bin",
           "offset": 0
         }
       ]
     }
   ]
 }
+
 
