@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
-  <title>CỜ TỶ PHÚ – Game Loader</title>
+  <title>CỜ TỶ PHÚ – Game Loader (Light)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- ESP WEB TOOLS -->
-  <script type="module"
-    src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js">
-  </script>
+  <script type="module" src="https://unpkg.com/esp-web-tools@9/dist/web/install-button.js"></script>
 
   <!-- FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,169 +16,423 @@
 
   <style>
     :root {
-      --primary:#0081c2;
-      --accent:#f1c40f;
-      --danger:#e74c3c;
-      --bg:#eef1f5;
-      --card:#ffffff;
-      --text:#1a1a1a;
-      --muted:#6b7280;
-      --success:#27ae60;
+      --primary: #0081c2;
+      --primary-dark: #005f8f;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --bg: #f3f7fa;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --success: #10b981;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      --border: rgba(0, 0, 0, 0.08);
     }
 
-    * { box-sizing:border-box; }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     body {
-      margin:0;
-      padding:40px 20px;
-      background:linear-gradient(180deg,#e5e7eb,#d6dbe1);
-      font-family:'Inter',system-ui,sans-serif;
-      color:var(--text);
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Landing Page Curved Background */
+    .header-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 400px;
+      background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+      z-index: -1;
+      clip-path: ellipse(130% 100% at 50% 0%);
     }
 
     .container {
-      max-width:560px;
-      margin:auto;
-      display:flex;
-      flex-direction:column;
-      gap:24px;
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      position: relative;
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        grid-template-columns: 380px 1fr;
+        align-items: start;
+      }
     }
 
     .card {
-      background:var(--card);
-      border-radius:20px;
-      padding:34px;
-      box-shadow:0 12px 30px rgba(0,0,0,.08);
-      border:1px solid rgba(0,0,0,.04);
+      background: var(--card);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .sticky-card {
+      position: sticky;
+      top: 40px;
     }
 
     .title {
-      font-family:'Be Vietnam Pro',sans-serif;
-      font-size:1.9rem;
-      font-weight:800;
-      text-align:center;
-      color:var(--primary);
-      margin-bottom:6px;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: linear-gradient(to right, var(--primary), #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .title span.emoji {
+      -webkit-text-fill-color: initial;
+      font-size: 2.2rem;
     }
 
     .subtitle {
-      text-align:center;
-      font-size:.9rem;
-      color:var(--muted);
-      margin-bottom:28px;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 32px;
     }
 
     .install-box {
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-      align-items:center;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      padding: 24px;
+      background: #f8fafc;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .install-box p {
+      margin: 0;
+      font-size: 0.9rem;
+      text-align: center;
+      font-weight: 500;
     }
 
     .install-btn {
-      padding:16px 26px;
-      border-radius:16px;
-      border:none;
-      font-size:1rem;
-      font-weight:700;
-      cursor:pointer;
-      background:linear-gradient(135deg,var(--danger),#d63031);
-      color:#fff;
-      box-shadow:0 10px 20px rgba(231,76,60,.35);
-      transition:.25s;
+      padding: 16px 32px;
+      border-radius: 14px;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 8px 15px rgba(0, 129, 194, 0.2);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      justify-content: center;
     }
 
     .install-btn:hover {
-      transform:translateY(-2px);
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 20px rgba(0, 129, 194, 0.3);
     }
 
     .note {
-      background:#fffbe6;
-      border:1px solid #ffe58f;
-      border-radius:12px;
-      padding:16px;
-      font-size:.85rem;
-      color:#7c2d12;
-      margin-top:20px;
+      background: #fff7ed;
+      border-left: 4px solid #f97316;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 0.85rem;
+      color: #9a3412;
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
     }
 
     .guide h3 {
-      font-family:'Be Vietnam Pro',sans-serif;
-      color:var(--primary);
-      margin-top:0;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin: 0 0 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .guide ul {
-      list-style:none;
-      padding:0;
+      list-style: none;
+      padding: 0;
     }
 
     .guide li {
-      padding-left:28px;
-      position:relative;
-      margin-bottom:14px;
-      font-size:.9rem;
+      padding: 12px 12px 12px 45px;
+      position: relative;
+      background: #f8fafc;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
     }
 
     .guide li::before {
-      content:"✓";
-      position:absolute;
-      left:0;
-      top:0;
-      font-weight:800;
-      color:var(--danger);
+      content: "✅";
+      position: absolute;
+      left: 15px;
+      top: 14px;
+      font-size: 1rem;
+    }
+
+    .grid-steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .grid-steps {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+    }
+
+    .guide-step h4 {
+      margin: 0 0 12px;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .img-container {
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      background: #eee;
+    }
+
+    .img-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .img-container img:hover {
+      transform: scale(1.05);
+    }
+
+    .zoom-img {
+      cursor: zoom-in;
+      max-width: 200px !important;
+      border-radius: 12px !important;
+    }
+
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    .image-modal img {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+
+    .image-modal .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 20px;
+      font-weight: bold;
     }
 
     .footer {
-      text-align:center;
-      font-size:12px;
-      color:#9ca3af;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 99px;
+      background: #e0f2fe;
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      border: 1px solid #bae6fd;
     }
   </style>
 </head>
 
 <body>
-<div class="container">
+  <!-- Curved Background Header -->
+  <div class="header-bg"></div>
 
-  <!-- INSTALL -->
-  <div class="card">
-    <div class="title">🎲 CỜ TỶ PHÚ</div>
-    <div class="subtitle">Trình cài đặt Firmware • ESP32</div>
+  <div class="container">
 
-    <div class="install-box">
-      <p>Kết nối ESP32 bằng cáp USB và bấm cài đặt.</p>
+    <!-- INSTALL SIDEBAR -->
+    <div class="card sticky-card">
+      <div style="text-align: center;"><span class="badge">V2024.12 • EMOJI EDITION</span></div>
+      <div class="title">
+        <span class="emoji">🎲</span>
+        CỜ TỶ PHÚ
+      </div>
+      <div class="subtitle">Trình cài đặt Firmware ESP32</div>
 
-      <esp-web-install-button manifest="manifest.json">
-        <button class="install-btn">
-          🚀 CÀI ĐẶT GAME
-        </button>
-      </esp-web-install-button>
+      <div class="install-box">
+        <p>Kết nối thiết bị qua cổng USB</p>
 
-      <p style="font-size:12px;color:var(--muted)">
-        Hỗ trợ Chrome / Edge • Không cần Arduino
-      </p>
+        <esp-web-install-button manifest="manifest.json">
+          <button class="install-btn">
+            <span>🚀</span> CÀI ĐẶT NGAY
+          </button>
+        </esp-web-install-button>
+
+        <div style="font-size:11px; color:var(--muted); text-align: center; line-height: 1.4; margin-top: 5px;">
+          Dành cho Chrome, Edge, Opera<br>
+          Không yêu cầu phần mềm bổ trợ
+        </div>
+      </div>
+
+      <div class="note">
+        <span style="font-size: 1.2rem;">⚠️</span>
+        <div><b>Lưu ý:</b> Đảm bảo cáp USB tiếp xúc tốt trong suốt quá trình cài đặt.</div>
+      </div>
     </div>
-  </div>
 
-  <!-- GUIDE -->
-  <div class="card guide">
-    <h3>📘 Hướng dẫn nhanh</h3>
-    <ul>
-      <li>Sử dụng cáp USB có truyền dữ liệu.</li>
-      <li>Bấm “CÀI ĐẶT GAME”.</li>
-      <li>Chọn đúng cổng ESP32.</li>
-      <li>Chờ đến khi hoàn tất và thiết bị tự khởi động.</li>
-    </ul>
+    <!-- MAIN CONTENT -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      
+      <!-- HƯỚNG DẪN NHANH -->
+      <div class="card guide">
+        <h3><span>📘</span> Hướng dẫn cài đặt</h3>
+        <ul>
+          <li>Sử dụng cáp USB có khả năng truyền dữ liệu (không phải cáp sạc thuần).</li>
+          <li>Bấm nút <b>"CÀI ĐẶT NGAY"</b> ở khung bên cạnh.</li>
+          <li>Chọn đúng cổng <b>USB Serial</b> trong danh sách hiện ra.</li>
+          <li>Giữ nguyên trình duyệt cho đến khi hiện thông báo thành công.</li>
+        </ul>
+      </div>
 
-    <div class="note">
-      ⚠️ Không rút cáp USB khi đang cài đặt firmware.
+      <!-- ĐẤU NỐI -->
+      <div class="card guide">
+        <h3><span>🔌</span> Sơ đồ phần cứng</h3>
+        <div class="guide-step">
+          <h4>Kết nối ESP32 + Audio + LED</h4>
+          <div class="img-container">
+            <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/docs/wiring.jpg" alt="Sơ đồ đấu nối ESP32">
+          </div>
+          <p>Yêu cầu nguồn 5V ổn định. Đảm bảo dây GND được nối chung giữa các module.</p>
+        </div>
+      </div>
+
+      <!-- CÁCH DÙNG -->
+      <div class="card guide">
+        <h3><span>🌐</span> Các bước thực hiện</h3>
+        
+        <div class="grid-steps">
+          <div class="guide-step">
+            <h4>1. Kết nối cáp 🔌</h4>
+            <div class="img-container">
+              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/docs/web-step-1.png" alt="Bước 1">
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <h4>2. Chọn Cổng COM 🖱️</h4>
+            <div class="img-container">
+              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/docs/web-step-2.png" alt="Bước 2">
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <h4>3. Hoàn tất ✨</h4>
+            <div class="img-container" style="background: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 150px;">
+              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd10.jpg" class="zoom-img" onclick="openImage(this.src)" alt="Bước 3">
+            </div>
+            <p style="font-size: 0.85rem; margin-top: 10px; color: var(--success); font-weight: 700;">Wifi Game: COTYPHU_2026</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        © 2024 Monopoly Bank • ESP32 Boardgame Project
+      </div>
     </div>
+
   </div>
 
-  <div class="footer">
-    © 2024 Monopoly Bank • ESP32 Boardgame Project
+  <!-- IMAGE MODAL -->
+  <div class="image-modal" id="imageModal" onclick="closeImage()">
+    <div class="close-btn">✕</div>
+    <img id="modalImg">
   </div>
 
-</div>
+  <script>
+    function openImage(src) {
+      const modal = document.getElementById("imageModal");
+      const img = document.getElementById("modalImg");
+      img.src = src;
+      modal.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeImage() {
+      document.getElementById("imageModal").style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+    
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape") closeImage();
+    });
+  </script>
+
 </body>
+
 </html>
