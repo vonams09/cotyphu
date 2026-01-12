@@ -44,7 +44,6 @@
       overflow-x: hidden;
     }
 
-    /* Landing Page Curved Background */
     .header-bg {
       position: absolute;
       top: 0;
@@ -96,6 +95,7 @@
       justify-content: center;
       gap: 12px;
       background: linear-gradient(to right, var(--primary), #3b82f6);
+      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 8px;
@@ -106,54 +106,98 @@
       font-size: 2.2rem;
     }
 
-    .subtitle {
-      text-align: center;
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--muted);
-      margin-bottom: 32px;
-    }
-
     .install-box {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 25px;
       align-items: center;
-      padding: 24px;
-      background: #f8fafc;
-      border-radius: 20px;
+      padding: 40px 24px;
+      background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+      border-radius: 30px;
       border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
     }
 
-    .install-box p {
-      margin: 0;
-      font-size: 0.9rem;
-      text-align: center;
-      font-weight: 500;
-    }
-
-    .install-btn {
-      padding: 16px 32px;
-      border-radius: 14px;
-      border: none;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 8px 15px rgba(0, 129, 194, 0.2);
-      transition: all 0.2s ease;
+    .tech-circle-wrapper {
+      position: relative;
+      width: 160px;
+      height: 160px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      width: 100%;
       justify-content: center;
     }
 
-    .install-btn:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 20px rgba(0, 129, 194, 0.3);
+    .tech-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px dashed var(--primary);
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: rotateRing 15s linear infinite;
+      pointer-events: none;
+    }
+
+    .tech-ring-solid {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border: 4px double var(--primary);
+      border-radius: 50%;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .install-btn-circle {
+      position: relative;
+      width: 115px;
+      height: 115px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 129, 194, 0.4);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 5;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .install-btn-circle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 35px rgba(0, 129, 194, 0.6);
+    }
+
+    @keyframes rotateRing {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .pulse-glow {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0.3;
+      z-index: 1;
+      animation: pulseGlow 2s ease-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(1); opacity: 0.3; }
+      100% { transform: scale(1.5); opacity: 0; }
     }
 
     .note {
@@ -203,52 +247,69 @@
       font-size: 1rem;
     }
 
-    .grid-steps {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 30px;
-      margin-top: 20px;
-    }
-
-    @media (min-width: 640px) {
-      .grid-steps {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      }
+    .guide-step {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
     }
 
     .guide-step h4 {
-      margin: 0 0 12px;
       font-family: 'Be Vietnam Pro', sans-serif;
-      font-size: 1.1rem;
-      color: var(--text);
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin: 0 0 12px 0;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .guide-step p {
+      margin: 12px 0;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .sub-section {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      margin: 15px 0;
+      border: 1px solid var(--border);
     }
 
     .img-container {
+      margin: 10px 0;
+      border-radius: 12px;
       overflow: hidden;
-      border-radius: 16px;
       border: 1px solid var(--border);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      background: #eee;
-    }
-
-    .img-container img {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: transform 0.5s ease;
-    }
-
-    .img-container img:hover {
-      transform: scale(1.05);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .zoom-img {
+      max-width: 100%;
+      height: auto;
       cursor: zoom-in;
-      max-width: 200px !important;
-      border-radius: 12px !important;
+      transition: transform 0.3s ease;
+      display: block;
+    }
+
+    .zoom-img:hover {
+      transform: scale(1.03);
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 15px 0;
     }
 
     .image-modal {
@@ -267,7 +328,6 @@
       max-width: 100%;
       max-height: 90vh;
       border-radius: 12px;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
     }
 
     .image-modal .close-btn {
@@ -282,18 +342,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: var(--text);
-      font-size: 20px;
       font-weight: bold;
-    }
-
-    .footer {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 40px 0;
-      font-size: 0.85rem;
-      color: var(--muted);
-      font-weight: 500;
     }
 
     .badge {
@@ -307,105 +356,193 @@
       margin-bottom: 12px;
       border: 1px solid #bae6fd;
     }
+
+    .footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .wifi-info {
+        background: #f0fdf4;
+        border: 1px dashed var(--success);
+        padding: 15px;
+        border-radius: 12px;
+        margin: 15px 0;
+    }
   </style>
 </head>
 
 <body>
-  <!-- Curved Background Header -->
   <div class="header-bg"></div>
 
   <div class="container">
-
-    <!-- INSTALL SIDEBAR -->
+    <!-- SIDEBAR -->
     <div class="card sticky-card">
-      <div style="text-align: center;"><span class="badge">V2024.12 • EMOJI EDITION</span></div>
-      <div class="title">
-        <span class="emoji">🎲</span>
-        CỜ TỶ PHÚ
-      </div>
-      <div class="subtitle">Trình cài đặt Firmware ESP32</div>
+      <div class="title"><span class="emoji">🎲</span>CỜ TỶ PHÚ</div>
+      <div style="text-align: center;"><span class="badge">FIRMWARE V1-2026 ESP32-S3</span></div>
 
       <div class="install-box">
-        <p>Kết nối thiết bị qua cổng USB</p>
-
-        <esp-web-install-button manifest="manifest.json">
-          <button class="install-btn">
-            <span>🚀</span> CÀI ĐẶT NGAY
-          </button>
-        </esp-web-install-button>
-
-        <div style="font-size:11px; color:var(--muted); text-align: center; line-height: 1.4; margin-top: 5px;">
-          Dành cho Chrome, Edge, Opera<br>
-          Không yêu cầu phần mềm bổ trợ
+        <p style="margin-bottom: 5px; font-weight: 600;">Sẵn sàng kết nối qua USB</p>
+        <div class="tech-circle-wrapper">
+          <div class="tech-ring"></div>
+          <div class="tech-ring-solid"></div>
+          <div class="pulse-glow"></div>
+          <esp-web-install-button manifest="manifest.json">
+            <button class="install-btn-circle" slot="activate">
+              <span>CONNECT</span>
+            </button>
+          </esp-web-install-button>
+        </div>
+        <div style="font-size:11px; color:var(--muted); text-align: center;">
+          Tương thích: Chrome, Edge<br><b>Nhấn vào nút tròn để bắt đầu</b>
         </div>
       </div>
 
       <div class="note">
         <span style="font-size: 1.2rem;">⚠️</span>
-        <div><b>Lưu ý:</b> Đảm bảo cáp USB tiếp xúc tốt trong suốt quá trình cài đặt.</div>
+        <div><b>Lưu ý:</b> Đảm bảo cáp USB tiếp xúc tốt, không ngắt kết nối khi đang nạp.</div>
       </div>
     </div>
 
     <!-- MAIN CONTENT -->
     <div style="display: flex; flex-direction: column; gap: 24px;">
       
-      <!-- HƯỚNG DẪN NHANH -->
       <div class="card guide">
         <h3><span>📘</span> Hướng dẫn cài đặt</h3>
         <ul>
-          <li>Sử dụng cáp USB có khả năng truyền dữ liệu (không phải cáp sạc thuần).</li>
-          <li>Bấm nút <b>"CÀI ĐẶT NGAY"</b> ở khung bên cạnh.</li>
+          <li>Phiên bản này chỉ sử dụng cho <b>ESP32 S3 N16R8</b>.</li>
+          <li>Sử dụng cáp USB có khả năng truyền dữ liệu.</li>
+          <li>Bấm nút <b>"CONNECT"</b> ở khung bên cạnh.</li>
           <li>Chọn đúng cổng <b>USB Serial</b> trong danh sách hiện ra.</li>
-          <li>Giữ nguyên trình duyệt cho đến khi hiện thông báo thành công.</li>
         </ul>
       </div>
 
-      <!-- ĐẤU NỐI -->
       <div class="card guide">
         <h3><span>🔌</span> Sơ đồ phần cứng</h3>
-        <div class="guide-step">
-          <h4>Kết nối ESP32 + Audio + LED</h4>
-          <div class="img-container">
-            <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/docs/wiring.jpg" alt="Sơ đồ đấu nối ESP32">
-          </div>
-          <p>Yêu cầu nguồn 5V ổn định. Đảm bảo dây GND được nối chung giữa các module.</p>
+        <div class="sub-section">
+           <div class="img-container">
+             <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/docs/wiring.jpg" class="zoom-img" onclick="openImage(this.src)">
+           </div>
+           <p style="font-size: 0.85rem; margin-top: 10px; color: var(--muted); text-align: center;">Đảm bảo kết nối đúng chân tín hiệu và nguồn điện cho TFT/DFPlayer.</p>
         </div>
       </div>
 
       <!-- CÁCH DÙNG -->
       <div class="card guide">
-        <h3><span>🌐</span> Các bước thực hiện</h3>
-        
-        <div class="grid-steps">
-          <div class="guide-step">
-            <h4>1. Kết nối cáp 🔌</h4>
+        <h3><span>🎲</span> Hướng dẫn sử dụng</h3>
+
+        <!-- BƯỚC 1 -->
+        <div class="guide-step">
+          <h4>1. Khởi động thiết bị</h4>
+          <p>
+            Khi bật nguồn, nếu nghe loa phát thông báo
+            <b>“...bắt đầu...”</b> thì mạch đã sẵn sàng hoạt động.
+          </p>
+        </div>
+
+        <!-- BƯỚC 2 -->
+        <div class="guide-step">
+          <h4>2. Truy cập và cài đặt wifi thiết bị</h4>
+          <p>Vào wifi chọn truy cập wifi của mạch:</p>
+          
+          <div class="wifi-info">
+            <p style="color: var(--success); font-weight: 700; margin: 0;">SSID: <b>COTYPHU_2026</b></p>
+            <p style="color: var(--success); font-weight: 700; margin: 5px 0 0 0;">Password: <b>12345678</b></p>
+          </div>
+
+          <p>Vào trình duyệt web trên điện thoại và truy cập địa chỉ <b>192.168.4.1</b> sẽ vào được giao diện chơi.</p>
+          
+          <div class="sub-section">
             <div class="img-container">
-              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/docs/web-step-1.png" alt="Bước 1">
+              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/hdsd/hdsd1.jpg" class="zoom-img" onclick="openImage(this.src)" alt="Giao diện chính">
+            </div>
+            <p>Nhấn vào biểu tượng <b>Cài đặt</b> (hình bánh răng) như hình trên để vào giao diện cấu hình Wifi.</p>
+          </div>
+
+          <p>Bước này dùng để cấu hình wifi ESP32 trùng wifi nhà, giúp thiết bị tự động kết nối mỗi khi bật nguồn.</p>
+
+          <div class="sub-section">
+            <div class="img-container">
+              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/hdsd/hdsd2.jpg" class="zoom-img" onclick="openImage(this.src)" alt="Cài đặt Wifi">
+            </div>
+            <p>Nhập tên Wifi và mật khẩu Wifi nhà bạn, sau đó nhấn xác nhận. Thiết bị sẽ khởi động lại.</p>
+          </div>
+
+          <div class="sub-section">
+            <div class="img-container">
+              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/hdsd/hdsd3.jpg" class="zoom-img" onclick="openImage(this.src)" alt="Xác nhận">
+            </div>
+            <p>Nếu trình duyệt không tự chuyển, hãy truy cập địa chỉ: <b>cotyphu2026.local</b> để bắt đầu chơi.</p>
+          </div>
+        </div>
+
+        <!-- BƯỚC 3 -->
+        <div class="guide-step">
+          <h4>3. Hoàn tất, cách sử dụng ✨</h4>
+          
+          <div class="sub-section">
+            <div class="img-container">
+              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd5.jpg" class="zoom-img" onclick="openImage(this.src)" alt="Chọn nhân vật">
+            </div>
+            <p>Chọn nhân vật yêu thích và đặt tên cho người chơi.</p>
+          </div>
+
+          <div class="sub-section">
+            <div class="img-container">
+              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd6.jpg" class="zoom-img" onclick="openImage(this.src)" alt="Bảng điều khiển">
+            </div>
+            <p>
+                Giao diện bao gồm các vùng: <b>Số dư tài khoản</b>, <b>Chuyển tiền cho người chơi</b>, <b>Chuyển tiền cho nhà nước</b> và <b>Lịch sử giao dịch</b>.
+            </p>
+          </div>
+
+          <div class="image-grid">
+            <div class="img-container">
+                <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd7.jpg" class="zoom-img" onclick="openImage(this.src)">
+            </div>
+            <div class="img-container">
+                <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd8x.jpg" class="zoom-img" onclick="openImage(this.src)">
+            </div>
+            <div class="img-container" style="max-width: 280px; margin: 10px auto;">
+                <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd9.jpg" class="zoom-img" onclick="openImage(this.src)">
             </div>
           </div>
 
-          <div class="guide-step">
-            <h4>2. Chọn Cổng COM 🖱️</h4>
-            <div class="img-container">
-              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/main/docs/web-step-2.png" alt="Bước 2">
+          <div class="sub-section" style="border-left: 4px solid var(--danger);">
+            
+            <p>
+                Nếu điện thoại tắt màn hình lâu hoặc bị Refresh trang, hệ thống sẽ hiện giao diện truy cập lại. Bạn chỉ cần <b>chọn lại đúng nhân vật cũ</b> để tiếp tục.
+            </p>
+            <div class="img-container" style="max-width: 280px; margin: 10px auto;">
+                <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd10.jpg" class="zoom-img" onclick="openImage(this.src)">
             </div>
           </div>
 
-          <div class="guide-step">
-            <h4>3. Hoàn tất ✨</h4>
-            <div class="img-container" style="background: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 150px;">
-              <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd10.jpg" class="zoom-img" onclick="openImage(this.src)" alt="Bước 3">
+          <p>Giao diện trên màn hình cảm ứng TFT của thiết bị:</p>
+          <div class="image-grid">
+            <div class="sub-section" style="margin: 0;">
+                <div class="img-container">
+                    <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd12.jpg" class="zoom-img" onclick="openImage(this.src)">
+                </div>
+                <p style="font-size: 0.8rem; text-align: center; margin-top: 8px;">Màn hình chờ</p>
             </div>
-            <p style="font-size: 0.85rem; margin-top: 10px; color: var(--success); font-weight: 700;">Wifi Game: COTYPHU_2026</p>
+            <div class="sub-section" style="margin: 0;">
+                <div class="img-container">
+                    <img src="https://raw.githubusercontent.com/vonams09/cotyphu/refs/heads/main/hdsd/hdsd14.jpg" class="zoom-img" onclick="openImage(this.src)">
+                </div>
+                <p style="font-size: 0.8rem; text-align: center; margin-top: 8px;">Bàn phím chuyển tiền</p>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="footer">
-        © 2024 Monopoly Bank • ESP32 Boardgame Project
-      </div>
     </div>
 
+    <div class="footer">
+      © 2024 Monopoly Bank • ESP32 Boardgame Project
+    </div>
   </div>
 
   <!-- IMAGE MODAL -->
@@ -427,12 +564,11 @@
       document.getElementById("imageModal").style.display = "none";
       document.body.style.overflow = "auto";
     }
-    
-    document.addEventListener('keydown', function(e) {
+
+    document.addEventListener('keydown', function (e) {
       if (e.key === "Escape") closeImage();
     });
   </script>
 
 </body>
-
 </html>
